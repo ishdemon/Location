@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void gpsStatus(boolean isGPSEnable) {
                 // turn on GPS
+                Log.wtf("gps", String.valueOf(isGPSEnable));
                 isGPS = isGPSEnable;
             }
         });
@@ -93,6 +95,14 @@ public class MainActivity extends AppCompatActivity {
 
             if (!isGPS) {
                 Toast.makeText(this, "Please turn on GPS", Toast.LENGTH_SHORT).show();
+                new GpsUtils(this).turnGPSOn(new GpsUtils.onGpsListener() {
+                    @Override
+                    public void gpsStatus(boolean isGPSEnable) {
+                        // turn on GPS
+                        Log.wtf("gps", ""+String.valueOf(isGPSEnable));
+                        isGPS = isGPSEnable;
+                    }
+                });
                 return;
             }
             isContinue = false;
@@ -169,7 +179,9 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == AppConstants.GPS_REQUEST) {
+                Log.wtf("status", String.valueOf(requestCode));
                 isGPS = true; // flag maintain before get location
+                getLocation();
             }
         }
     }

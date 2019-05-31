@@ -73,6 +73,7 @@ public class GpsUtils {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             int statusCode = ((ApiException) e).getStatusCode();
+                            Log.wtf("failed", String.valueOf(statusCode));
                             switch (statusCode) {
                                 case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
 
